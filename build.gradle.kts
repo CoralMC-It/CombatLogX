@@ -12,12 +12,14 @@ subprojects {
     apply(plugin = "java")
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+        val selectedDevPaper = providers.gradleProperty("platform").orNull == "paper"
+        sourceCompatibility = if (selectedDevPaper) JavaVersion.VERSION_25 else JavaVersion.VERSION_21
+        targetCompatibility = if (selectedDevPaper) JavaVersion.VERSION_25 else JavaVersion.VERSION_21
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
 
     repositories {
+        mavenLocal()
         maven("https://nexus.sirblobman.xyz/central-mirror/") // Central Mirror
         maven("https://repo.aikar.co/nexus/content/groups/aikar/") // Aikar Repository
         maven("https://nexus.sirblobman.xyz/public/") // SirBlobman Public Repository

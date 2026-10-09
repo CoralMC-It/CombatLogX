@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
 import com.github.sirblobman.api.language.replacer.Replacer;
-import com.github.sirblobman.api.language.replacer.StringReplacer;
+import com.github.sirblobman.api.language.replacer.ComponentReplacer;
 import com.github.sirblobman.combatlogx.api.event.PlayerTagEvent;
 import com.github.sirblobman.combatlogx.api.manager.ICombatManager;
 import com.github.sirblobman.combatlogx.api.object.UntagReason;
@@ -49,8 +49,8 @@ public final class ListenerGameMode extends CheatPreventionListener {
             GameMode gameMode = getForceSwitchMode();
             player.setGameMode(gameMode);
 
-            String gameModeName = gameMode.name();
-            Replacer replacer = new StringReplacer("{game_mode}", gameModeName);
+            com.github.sirblobman.api.shaded.adventure.text.Component gameModeName = getLanguageManager().getMessage(player, "game-mode." + gameMode.name().toLowerCase(java.util.Locale.ROOT));
+            Replacer replacer = new ComponentReplacer("{game_mode}", gameModeName);
             sendMessage(player, "expansion.cheat-prevention.game-mode.force-switch", replacer);
         }
     }

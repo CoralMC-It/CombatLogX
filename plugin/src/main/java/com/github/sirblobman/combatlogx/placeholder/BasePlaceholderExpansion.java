@@ -135,11 +135,11 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
 
         switch (placeholder) {
             case "name":
-                return getEnemyName(enemy);
+                return getEnemyName(player, enemy);
             case "type":
-                return getEnemyType(enemy);
+                return getEnemyType(player, enemy);
             case "display_name":
-                return getEnemyDisplayName(enemy);
+                return getEnemyDisplayName(player, enemy);
             case "health":
                 return getEnemyHealth(player, enemy);
             case "health_rounded":
@@ -375,7 +375,8 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
         return languageManager.getMessage(player, "placeholder.unknown-enemy");
     }
 
-    private @NotNull Component getEnemyName(@NotNull Entity entity) {
+    private @NotNull Component getEnemyName(@NotNull Player viewer, @NotNull Entity entity) {
+        if (!(entity instanceof Player) && entity.getCustomName() == null) return getEnemyType(viewer, entity);
         ICombatLogX plugin = getCombatLogX();
         MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
         EntityHandler entityHandler = multiVersionHandler.getEntityHandler();
@@ -384,7 +385,7 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
         return Component.text(entityName);
     }
 
-    private @NotNull Component getEnemyDisplayName(@NotNull Entity enemy) {
+    private @NotNull Component getEnemyDisplayName(@NotNull Player viewer, @NotNull Entity enemy) {
         if (PaperChecker.hasNativeComponentSupport()) {
             Component customName = PaperHelper.getCustomName(enemy);
             if (customName != null) {
@@ -392,13 +393,11 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
             }
         }
 
-        return getEnemyName(enemy);
+        return getEnemyName(viewer, enemy);
     }
 
-    private @NotNull Component getEnemyType(@NotNull Entity enemy) {
-        EntityType entityType = enemy.getType();
-        String entityTypeName = entityType.name();
-        return Component.text(entityTypeName);
+    private @NotNull Component getEnemyType(@NotNull Player viewer, @NotNull Entity enemy) {
+        return getCombatLogX().getLanguageManager().getEntityType(viewer, enemy.getType());
     }
 
     private @NotNull Component getEnemyHealth(@NotNull Player player, @NotNull Entity enemy) {

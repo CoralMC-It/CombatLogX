@@ -13,9 +13,13 @@ things and change how the plugin works.
 
 ## Requirements
 
-- Java 8
+- Java 25 build toolchain and target Dev runtime; the Tongue fork publishes Java 21 module variants to match BlueSlimeCore and Tongue 1.5.0 (not Java 8).
 - [Spigot](https://spigotmc.org/), [Paper](https://papermc.io/download/paper), or [Folia](https://papermc.io/software/folia) 1.8.8-26.1.2
 - [BlueSlimeCore](https://hangar.papermc.io/SirBlobman/BlueSlimeCore) 2.9.9 or higher.
+
+The SMP Dev backend-only build uses `-Pplatform=paper -PserverVersion=26.2` (or `26.1.2` for that version) to emit Java 25 variants matching the selected BlueSlimeCore API. Build BlueSlimeCore and publish its API locally first; its default multi-version distribution remains separate from this Dev-selected distribution.
+Explicit expansion Java overrides follow the same selection: Java 25 bytecode for `platform=paper`, Java 21 for the default modern fork, compiled with the Java 25 toolchain. All expansion modules and compatibility hooks remain included in their existing dependency graph.
+
 
 ## Main Features
 
@@ -71,6 +75,9 @@ The people or organizations listed below were kind enough to fund my open-source
 A community translation project for CombatLogX is open.
 If you want to help with translations, please visit our Crowdin page.   
 <https://crowdin.com/project/combatlogx-spigot-plugin>
+
+The Dev integration selects player messages using Tongue 1.5.0, independent of the Minecraft client language and `enforce-default-locale`. Italian, English and French player messages are bundled in `tongue/combatlogx_<locale>.properties`; native `language/*.lang.yml` values can reference `%tongue_combatlogx:key%`. Literal custom messages and configured CHAT/ACTION_BAR delivery overrides remain supported. Apply the supplied runtime language cutover when upgrading an existing Dev installation. Unnamed mob types follow the viewer's selected language; player/custom entity names, commands and expansion behavior are unchanged.
+
 
 ### Localization Credits
 
