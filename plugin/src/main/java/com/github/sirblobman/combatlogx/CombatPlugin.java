@@ -128,6 +128,7 @@ public final class CombatPlugin extends ConfigurablePlugin implements ICombatLog
         expansionManager.disableExpansions();
 
         broadcastMessageOnDisable();
+        getLanguageManager().onPluginDisable();
     }
 
     @Override

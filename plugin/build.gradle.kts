@@ -32,6 +32,7 @@ val pluginSoftDepend = listOf(
     "MCPets",
     "MythicMobs",
     "PlaceholderAPI",
+    "Tongue",
     "PlayerParticles",
     "PreciousStones",
     "PremiumVanish",
