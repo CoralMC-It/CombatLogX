@@ -299,10 +299,14 @@ public final class CombatManager extends Manager implements ICombatManager {
             }
         }
 
-        if (!(entity instanceof Player) && entity.getCustomName() == null) {
-            return getCombatLogX().getLanguageManager().getEntityType(player, entity.getType());
-        }
         ICombatLogX plugin = getCombatLogX();
+        if (!(entity instanceof Player) && entity.getCustomName() == null) {
+            Component localized = plugin.getLanguageManager().getEntityType(player, entity.getType());
+            if (localized != null) {
+                return localized;
+            }
+        }
+
         MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
         EntityHandler entityHandler = multiVersionHandler.getEntityHandler();
 
@@ -315,7 +319,14 @@ public final class CombatManager extends Manager implements ICombatManager {
             return getUnknownEnemy(player);
         }
 
-        return getCombatLogX().getLanguageManager().getEntityType(player, entity.getType());
+        Component localized = getCombatLogX().getLanguageManager().getEntityType(player, entity.getType());
+        if (localized != null) {
+            return localized;
+        }
+
+        EntityType entityType = entity.getType();
+        String entityTypeName = entityType.name();
+        return Component.text(entityTypeName);
     }
 
     private boolean failsPreTagEvent(@NotNull Player player, @Nullable Entity enemy, @NotNull TagType tagType,

@@ -76,7 +76,7 @@ A community translation project for CombatLogX is open.
 If you want to help with translations, please visit our Crowdin page.   
 <https://crowdin.com/project/combatlogx-spigot-plugin>
 
-The Dev integration selects player messages using Tongue 1.5.0, independent of the Minecraft client language and `enforce-default-locale`. Italian, English and French player messages are bundled in `tongue/combatlogx_<locale>.properties`; native `language/*.lang.yml` values can reference `%tongue_combatlogx:key%`. Literal custom messages and configured CHAT/ACTION_BAR delivery overrides remain supported. Apply the supplied runtime language cutover when upgrading an existing Dev installation. Unnamed mob types follow the viewer's selected language; player/custom entity names, commands and expansion behavior are unchanged.
+This fork requires Tongue (1.5+) and the CoralMC BlueSlimeCore fork (`com.github.sirblobman.api:core:2.9-coral-SNAPSHOT`, publish it to mavenLocal first). Player language files follow the player's Tongue locale (unknown languages use `default-locale`; `enforce-default-locale` still forces the default). Italian, English and French player messages are bundled in `tongue/combatlogx_<locale>.properties`; bundled `language/*.lang.yml` values reference `%tongue_combatlogx:key%`. Existing language files with literal messages keep working; files saved before the `game-mode.*` keys existed show the game mode name as before. Literal custom messages and configured CHAT/ACTION_BAR delivery overrides remain supported. Unnamed mob types use the `entity.<type>` catalog keys; player/custom entity names, commands and expansion behavior are unchanged.
 
 
 ### Localization Credits

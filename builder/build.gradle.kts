@@ -7,8 +7,8 @@ val pluginJar: Configuration by configurations.creating
 val expansion: Configuration by configurations.creating
 
 dependencies {
-    // BlueSlimeCore
-    coreJar("com.github.sirblobman.api:core:2.9-SNAPSHOT")
+    // BlueSlimeCore (CoralMC fork, mavenLocal)
+    coreJar("com.github.sirblobman.api:core:2.9-coral-SNAPSHOT")
 
     // CombatLogX
     pluginJar(project(path = ":plugin", configuration = "shadow"))

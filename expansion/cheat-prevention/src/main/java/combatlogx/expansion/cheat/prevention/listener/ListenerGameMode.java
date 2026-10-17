@@ -1,5 +1,7 @@
 package combatlogx.expansion.cheat.prevention.listener;
 
+import java.util.Locale;
+
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.GameMode;
@@ -8,8 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
-import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.replacer.ComponentReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
 import com.github.sirblobman.combatlogx.api.event.PlayerTagEvent;
 import com.github.sirblobman.combatlogx.api.manager.ICombatManager;
 import com.github.sirblobman.combatlogx.api.object.UntagReason;
@@ -49,8 +54,7 @@ public final class ListenerGameMode extends CheatPreventionListener {
             GameMode gameMode = getForceSwitchMode();
             player.setGameMode(gameMode);
 
-            com.github.sirblobman.api.shaded.adventure.text.Component gameModeName = getLanguageManager().getMessage(player, "game-mode." + gameMode.name().toLowerCase(java.util.Locale.ROOT));
-            Replacer replacer = new ComponentReplacer("{game_mode}", gameModeName);
+            Replacer replacer = getGameModeReplacer(player, gameMode);
             sendMessage(player, "expansion.cheat-prevention.game-mode.force-switch", replacer);
         }
     }
@@ -60,6 +64,21 @@ public final class ListenerGameMode extends CheatPreventionListener {
             ICombatManager combatManager = getCombatManager();
             combatManager.untag(player, UntagReason.EXPIRE);
         }
+    }
+
+    /**
+     * Language files saved before the {@code game-mode.*} keys existed keep the previous behaviour (the enum name).
+     */
+    private @NotNull Replacer getGameModeReplacer(@NotNull Player player, @NotNull GameMode gameMode) {
+        LanguageManager languageManager = getLanguageManager();
+        String key = "game-mode." + gameMode.name().toLowerCase(Locale.US);
+        String missing = String.format(Locale.US, "{%s}", key);
+        if (missing.equals(languageManager.getMessageRaw(player, key))) {
+            return new StringReplacer("{game_mode}", gameMode.name());
+        }
+
+        Component gameModeName = languageManager.getMessage(player, key);
+        return new ComponentReplacer("{game_mode}", gameModeName);
     }
 
     private @NotNull IGameModeConfiguration getGameModeConfiguration() {

@@ -33,8 +33,12 @@ public final class PlaceholderHelper {
         }
 
         if (!(entity instanceof Player) && entity.getCustomName() == null) {
-            return plugin.getLanguageManager().getEntityType(player, entity.getType());
+            Component localized = plugin.getLanguageManager().getEntityType(player, entity.getType());
+            if (localized != null) {
+                return localized;
+            }
         }
+
         MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
         EntityHandler entityHandler = multiVersionHandler.getEntityHandler();
         String entityName = entityHandler.getName(entity);

@@ -3,7 +3,8 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 val pluginVersion = rootProject.version.toString();
-val pluginDepend = listOf("BlueSlimeCore")
+// Bundled language files reference the combatlogx Tongue catalog, so Tongue is required.
+val pluginDepend = listOf("BlueSlimeCore", "Tongue")
 val pluginSoftDepend = listOf(
     "AngelChest",
     "ASkyBlock",
@@ -32,7 +33,6 @@ val pluginSoftDepend = listOf(
     "MCPets",
     "MythicMobs",
     "PlaceholderAPI",
-    "Tongue",
     "PlayerParticles",
     "PreciousStones",
     "PremiumVanish",

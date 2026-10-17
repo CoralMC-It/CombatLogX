@@ -376,8 +376,14 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
     }
 
     private @NotNull Component getEnemyName(@NotNull Player viewer, @NotNull Entity entity) {
-        if (!(entity instanceof Player) && entity.getCustomName() == null) return getEnemyType(viewer, entity);
         ICombatLogX plugin = getCombatLogX();
+        if (!(entity instanceof Player) && entity.getCustomName() == null) {
+            Component localized = plugin.getLanguageManager().getEntityType(viewer, entity.getType());
+            if (localized != null) {
+                return localized;
+            }
+        }
+
         MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
         EntityHandler entityHandler = multiVersionHandler.getEntityHandler();
 
@@ -397,7 +403,14 @@ public final class BasePlaceholderExpansion implements IPlaceholderExpansion {
     }
 
     private @NotNull Component getEnemyType(@NotNull Player viewer, @NotNull Entity enemy) {
-        return getCombatLogX().getLanguageManager().getEntityType(viewer, enemy.getType());
+        Component localized = getCombatLogX().getLanguageManager().getEntityType(viewer, enemy.getType());
+        if (localized != null) {
+            return localized;
+        }
+
+        EntityType entityType = enemy.getType();
+        String entityTypeName = entityType.name();
+        return Component.text(entityTypeName);
     }
 
     private @NotNull Component getEnemyHealth(@NotNull Player player, @NotNull Entity enemy) {
